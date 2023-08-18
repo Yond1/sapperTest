@@ -44,6 +44,7 @@ const countOpenCell = ref<number>(0);
 const gameStatus = ref<string>(EGameStatus.WAIT);
 const clearCell = ref<number>(0);
 const gameTime = ref<number>(0);
+const leftTime = ref(0);
 const divBoard = ref();
 const userName = ref<string>("anonym");
 const store = useScoreBoardStore();
@@ -132,7 +133,11 @@ let timer: ReturnType<typeof setInterval>;
 
 const startTimer = () => {
   timer = setInterval(() => {
-    return gameTime.value++;
+    gameTime.value++;
+    leftTime.value = board.value.time - gameTime.value;
+    if (leftTime.value === 0) {
+      return (gameStatus.value = EGameStatus.GAME_OVER);
+    }
   }, 1000);
 };
 
@@ -243,6 +248,7 @@ const start = () => {
   disabledDefaultContextMenu();
   gameStatus.value = EGameStatus.WAIT;
   clearCell.value = board.value.cell - board.value.bomb;
+  leftTime.value = board.value.time;
 };
 
 // render cell in html
@@ -321,7 +327,7 @@ watch(
           }}
         </span>
       </div>
-      <div class="board-header-content">Время {{ gameTime }}</div>
+      <div class="board-header-content">Время {{ leftTime }}</div>
     </div>
     <div ref="divBoard" class="board-wrapper">
       <div class="board" v-for="x in matrixBoard">
