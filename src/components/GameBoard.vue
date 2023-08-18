@@ -345,7 +345,7 @@ watch(
   width: 100%;
 }
 .container {
-  width: 70%;
+  max-width: 70%;
 }
 .popup {
   width: 100%;
@@ -391,6 +391,7 @@ watch(
 @media screen and (max-width: 600px) {
   .container {
     width: 100%;
+    max-width: 100%;
   }
   .board-cell {
     width: 100%;
